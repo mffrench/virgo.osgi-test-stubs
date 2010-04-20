@@ -1,0 +1,3 @@
+org.aspectj=1.6.6.RELEASE
+org.osgi=4.1.0
+org.junit=4.7.0
