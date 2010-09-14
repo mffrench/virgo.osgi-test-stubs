@@ -28,7 +28,7 @@ import org.eclipse.virgo.teststubs.osgi.support.PropertiesFilter;
 import org.eclipse.virgo.teststubs.osgi.support.TrueFilter;
 
 /**
- * A stub testing implementation of {@link ConfigurationAdmin} as defined in ¤104.15.3 of the OSGi Service Platform
+ * A stub testing implementation of {@link ConfigurationAdmin} as defined in section 104.15.3 of the OSGi Service Platform
  * Service Compendium.
  * <p />
  * 

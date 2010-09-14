@@ -23,7 +23,7 @@ import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 
 /**
- * A stub testing implementation of {@link Configuration} as defined in ¤104.15.2 of the OSGi Service Platform Service
+ * A stub testing implementation of {@link Configuration} as defined in section 104.15.2 of the OSGi Service Platform Service
  * Compendium.
  * <p />
  * 

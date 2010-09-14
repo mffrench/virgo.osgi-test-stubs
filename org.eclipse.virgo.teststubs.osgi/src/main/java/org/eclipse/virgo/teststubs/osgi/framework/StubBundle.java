@@ -32,7 +32,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 
 /**
- * A stub testing implementation of {@link Bundle} as defined in ¤6.1.4 of the OSGi Service Platform Core Specification.
+ * A stub testing implementation of {@link Bundle} as defined in section 6.1.4 of the OSGi Service Platform Core Specification.
  * <p />
  * 
  * <strong>Concurrent Semantics</strong><br />

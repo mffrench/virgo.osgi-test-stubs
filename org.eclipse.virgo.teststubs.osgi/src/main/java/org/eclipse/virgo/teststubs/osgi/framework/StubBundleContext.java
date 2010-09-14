@@ -39,7 +39,7 @@ import org.osgi.framework.Version;
 import org.eclipse.virgo.teststubs.osgi.support.TrueFilter;
 
 /**
- * A stub testing implementation of {@link BundleContext} as defined in ¤6.1.6 of the OSGi Service Platform Core
+ * A stub testing implementation of {@link BundleContext} as defined in section 6.1.6 of the OSGi Service Platform Core
  * Specification.
  * <p />
  * 

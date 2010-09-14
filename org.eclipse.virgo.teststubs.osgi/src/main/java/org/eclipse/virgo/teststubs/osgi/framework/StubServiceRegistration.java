@@ -24,7 +24,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- * A stub testing implementation of {@link ServiceRegistration} as defined in ¤6.1.24 of the OSGi Service Platform Core
+ * A stub testing implementation of {@link ServiceRegistration} as defined in section 6.1.24 of the OSGi Service Platform Core
  * Specification.
  * <p />
  * 
