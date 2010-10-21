@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-Name: (incubation) OSGi Framework Test Stub Implementations
+Bundle-Name: OSGi Framework Test Stub Implementations
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.virgo.teststubs.osgi
 Bundle-Version: 1.0.0

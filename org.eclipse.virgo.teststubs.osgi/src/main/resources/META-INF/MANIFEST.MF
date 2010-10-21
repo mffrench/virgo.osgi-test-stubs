@@ -10,7 +10,7 @@ Export-Package: com.springsource;version="1.0.0",com.springsource.osgi
  mework"
 Bundle-Version: 1.0.0
 Tool: Bundlor 1.0.0.M6
-Bundle-Name: (incubation) OSGi Framework Test Stub Implementations
+Bundle-Name: OSGi Framework Test Stub Implementations
 Bundle-ManifestVersion: 2
 Import-Package: org.aspectj.internal.lang.annotation;version="[1.6.3.R
  ELEASE, 2.0.0)",org.aspectj.lang;version="[1.6.3.RELEASE, 2.0.0)",org
