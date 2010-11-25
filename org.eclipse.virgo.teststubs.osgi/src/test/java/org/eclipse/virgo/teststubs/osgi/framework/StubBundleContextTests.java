@@ -158,6 +158,20 @@ public class StubBundleContextTests {
         assertSame(service, this.bundleContext.getService(serviceRegistration.getReference()));
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void registerServiceTyped() {
+        Dictionary properties = new Hashtable();
+        properties.put("testKey", "testValue");
+        Object service = new Object();
+        ServiceRegistration<Object> serviceRegistration = this.bundleContext.registerService(Object.class, service, properties);
+        assertNotNull(serviceRegistration);
+        assertNotNull(serviceRegistration.getReference());
+        assertEquals("testValue", serviceRegistration.getReference().getProperty("testKey"));
+        assertSame(service, this.bundleContext.getService(serviceRegistration.getReference()));
+    }
+
+
     @Test
     public void getService() {
         Object service = new Object();
@@ -262,6 +276,13 @@ public class StubBundleContextTests {
     }
 
     @Test
+    public void getServiceReferencesTyped() throws InvalidSyntaxException {
+        this.bundleContext.addFilter(new TestFilter());
+        this.bundleContext.registerService(Object.class, new Object(), null);
+        assertEquals(1, this.bundleContext.getServiceReferences(Object.class, "testFilter").size());
+    }
+
+    @Test
     public void getServiceReferenceNoValues() throws InvalidSyntaxException {
         assertNull(this.bundleContext.getServiceReference((String)null));
     }
@@ -271,6 +292,13 @@ public class StubBundleContextTests {
         this.bundleContext.registerService(Object.class.getName(), new Object(), null);
         assertNotNull(this.bundleContext.getServiceReference((String)null));
     }
+
+    @Test
+    public void getServiceReferenceOneValueTyped() throws InvalidSyntaxException {
+        this.bundleContext.registerService(Object.class.getName(), new Object(), null);
+        assertNotNull(this.bundleContext.getServiceReference(Object.class));
+    }
+
 
     @Test
     public void getServiceReferenceTwoValues() throws InvalidSyntaxException {

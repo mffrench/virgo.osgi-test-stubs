@@ -155,7 +155,8 @@ public final class StubBundleContext implements BundleContext {
                 throw new NullPointerException();
             }
             if (!this.filters.containsKey(filter)) {
-                throw new InvalidSyntaxException(String.format("You must first add a filter mapping for '%s' with the addFilter(String, Filter) method", filter), filter);
+                throw new InvalidSyntaxException(String.format(
+                    "You must first add a filter mapping for '%s' with the addFilter(String, Filter) method", filter), filter);
             }
             return this.filters.get(filter);
         }
@@ -522,23 +523,41 @@ public final class StubBundleContext implements BundleContext {
         return ((StubServiceReference) reference).getServiceRegistration().getUnregistered();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public <S> ServiceRegistration<S> registerService(Class<S> clazz, S service, Dictionary<String, ?> properties) {
-        // TODO Auto-generated method stub
-        return null;
+        return (ServiceRegistration<S>) registerService(clazz.getName(), service, properties);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public <S> ServiceReference<S> getServiceReference(Class<S> clazz) {
-        // TODO Auto-generated method stub
-        return null;
+        return (ServiceReference<S>) getServiceReference(clazz.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public <S> Collection<ServiceReference<S>> getServiceReferences(Class<S> clazz, String filter) throws InvalidSyntaxException {
-        // TODO Auto-generated method stub
-        return null;
+        Collection<ServiceReference<S>> references = new ArrayList<ServiceReference<S>>();
+        ServiceReference<S>[] matchingReferences = (ServiceReference<S>[]) getServiceReferences(clazz.getName(), filter);
+        if (matchingReferences != null) {
+            for (ServiceReference<S> reference : matchingReferences) {
+                references.add(reference);
+            }
+        }
+        return references;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Bundle getBundle(String location) {
-        // TODO Auto-generated method stub
         return null;
     }
 }
