@@ -34,7 +34,7 @@ public class ObjectClassFilterTests {
 
     @Test
     public void matchServiceReference() {
-        ServiceReference objectServiceReference = new ServiceReference() {
+        ServiceReference<Object> objectServiceReference = new ServiceReference<Object>() {
 
             public int compareTo(Object reference) {
                 throw new UnsupportedOperationException();

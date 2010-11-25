@@ -1,15 +1,14 @@
 Manifest-Version: 1.0
-Export-Package: com.springsource;version="1.0.0",com.springsource.osgi
- ;version="1.0.0",org.eclipse.virgo.teststubs.osgi.framework;version="
- 1.0.0";uses:="org.osgi.framework",org.eclipse.virgo.teststubs.osgi.se
- rvice.cm;version="1.0.0";uses:="org.osgi.framework,org.osgi.service.c
- m",org.eclipse.virgo.teststubs.osgi.service.event;version="1.0.0";use
- s:="org.osgi.service.event",org.eclipse.virgo.teststubs.osgi.service.
- event.internal;version="1.0.0";uses:="org.osgi.service.event",org.ecl
- ipse.virgo.teststubs.osgi.support;version="1.0.0";uses:="org.osgi.fra
- mework"
+Export-Package: org.eclipse.virgo.teststubs.osgi.framework;version="1.
+ 0.0";uses:="org.osgi.framework",org.eclipse.virgo.teststubs.osgi.serv
+ ice.cm;version="1.0.0";uses:="org.osgi.framework,org.osgi.service.cm"
+ ,org.eclipse.virgo.teststubs.osgi.service.event;version="1.0.0";uses:
+ ="org.osgi.service.event",org.eclipse.virgo.teststubs.osgi.service.ev
+ ent.internal;version="1.0.0";uses:="org.osgi.service.event",org.eclip
+ se.virgo.teststubs.osgi.support;version="1.0.0";uses:="org.osgi.frame
+ work"
 Bundle-Version: 1.0.0
-Tool: Bundlor 1.0.0.M6
+Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: OSGi Framework Test Stub Implementations
 Bundle-ManifestVersion: 2
 Import-Package: org.aspectj.internal.lang.annotation;version="[1.6.3.R

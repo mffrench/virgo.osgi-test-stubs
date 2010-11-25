@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
@@ -286,21 +287,21 @@ public final class StubBundleContext implements BundleContext {
     /**
      * {@inheritDoc}
      */
-    public Object getService(ServiceReference reference) {
+    public <S> S getService(ServiceReference<S> reference) {
         synchronized (this.servicesMonitor) {
             if (serviceUnregistered(reference)) {
                 return null;
             }
 
-            return this.services.get(reference);
+            return (S) this.services.get(reference);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public ServiceReference getServiceReference(String clazz) {
-        ServiceReference[] serviceReferences = null;
+    public ServiceReference<?> getServiceReference(String clazz) {
+        ServiceReference<?>[] serviceReferences = null;
         try {
             serviceReferences = getServiceReferences(clazz, null);
         } catch (InvalidSyntaxException e) {
@@ -382,7 +383,7 @@ public final class StubBundleContext implements BundleContext {
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ServiceRegistration registerService(String[] clazzes, Object service, Dictionary properties) {
+    public ServiceRegistration<?> registerService(String[] clazzes, Object service, Dictionary<String, ?> properties) {
         StubServiceRegistration serviceRegistration = createServiceRegistration(clazzes, properties);
         StubServiceReference serviceReference = createServiceReference(clazzes, service, serviceRegistration);
 
@@ -411,7 +412,7 @@ public final class StubBundleContext implements BundleContext {
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ServiceRegistration registerService(String clazz, Object service, Dictionary properties) {
+    public ServiceRegistration<?> registerService(String clazz, Object service, Dictionary<String, ?> properties) {
         return registerService(new String[] { clazz }, service, properties);
     }
 
@@ -504,7 +505,7 @@ public final class StubBundleContext implements BundleContext {
     /**
      * {@inheritDoc}
      */
-    public boolean ungetService(ServiceReference reference) {
+    public boolean ungetService(ServiceReference<?> reference) {
         return !serviceUnregistered(reference);
     }
 
@@ -519,5 +520,25 @@ public final class StubBundleContext implements BundleContext {
 
     private boolean serviceUnregistered(ServiceReference reference) {
         return ((StubServiceReference) reference).getServiceRegistration().getUnregistered();
+    }
+
+    public <S> ServiceRegistration<S> registerService(Class<S> clazz, S service, Dictionary<String, ?> properties) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public <S> ServiceReference<S> getServiceReference(Class<S> clazz) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public <S> Collection<ServiceReference<S>> getServiceReferences(Class<S> clazz, String filter) throws InvalidSyntaxException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Bundle getBundle(String location) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

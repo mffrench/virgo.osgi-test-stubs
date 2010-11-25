@@ -12,6 +12,7 @@
 package org.eclipse.virgo.teststubs.osgi.support;
 
 import java.util.Dictionary;
+import java.util.Map;
 
 import org.osgi.framework.Filter;
 import org.osgi.framework.ServiceReference;
@@ -53,23 +54,28 @@ public class FalseFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
-    public boolean match(ServiceReference reference) {
+   public boolean match(ServiceReference<?> reference) {
         return false;
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean match(Dictionary dictionary) {
+    public boolean match(Dictionary<String, ?> dictionary) {
         return false;
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean matchCase(Dictionary dictionary) {
+    public boolean matchCase(Dictionary<String, ?> dictionary) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean matches(Map<String, ?> map) {
         return false;
     }
 

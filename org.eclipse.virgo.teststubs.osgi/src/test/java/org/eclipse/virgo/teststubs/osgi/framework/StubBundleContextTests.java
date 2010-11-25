@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.osgi.framework.Bundle;
@@ -232,13 +233,13 @@ public class StubBundleContextTests {
 
     @Test
     public void getServiceReferencesNullReturn() throws InvalidSyntaxException {
-        assertNull(this.bundleContext.getServiceReferences(null, null));
+        assertNull(this.bundleContext.getServiceReferences((String)null, null));
     }
 
     @Test
     public void getServiceReferencesNullClassNullFilter() throws InvalidSyntaxException {
         this.bundleContext.registerService(Object.class.getName(), new Object(), null);
-        assertEquals(1, this.bundleContext.getServiceReferences(null, null).length);
+        assertEquals(1, this.bundleContext.getServiceReferences((String)null, null).length);
     }
 
     @Test
@@ -262,20 +263,20 @@ public class StubBundleContextTests {
 
     @Test
     public void getServiceReferenceNoValues() throws InvalidSyntaxException {
-        assertNull(this.bundleContext.getServiceReference(null));
+        assertNull(this.bundleContext.getServiceReference((String)null));
     }
 
     @Test
     public void getServiceReferenceOneValue() throws InvalidSyntaxException {
         this.bundleContext.registerService(Object.class.getName(), new Object(), null);
-        assertNotNull(this.bundleContext.getServiceReference(null));
+        assertNotNull(this.bundleContext.getServiceReference((String)null));
     }
 
     @Test
     public void getServiceReferenceTwoValues() throws InvalidSyntaxException {
         this.bundleContext.registerService(Object.class.getName(), new Object(), null);
         this.bundleContext.registerService(Object.class.getName(), new Object(), null);
-        assertNotNull(this.bundleContext.getServiceReference(null));
+        assertNotNull(this.bundleContext.getServiceReference((String)null));
     }
 
     private static class TestBundleListener implements BundleListener {
@@ -326,20 +327,39 @@ public class StubBundleContextTests {
 
     private static class TestFilter extends AbstractFilter {
 
-        public boolean match(ServiceReference reference) {
+        /**
+         * {@inheritDoc}
+         */
+        public boolean match(ServiceReference<?> reference) {
             return true;
         }
 
-        public boolean match(Dictionary dictionary) {
+        /**
+         * {@inheritDoc}
+         */
+        public boolean match(Dictionary<String, ?> dictionary) {
             throw new UnsupportedOperationException();
         }
 
-        public boolean matchCase(Dictionary dictionary) {
+        /**
+         * {@inheritDoc}
+         */
+        public boolean matchCase(Dictionary<String, ?> dictionary) {
             throw new UnsupportedOperationException();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public String getFilterString() {
             return "testFilter";
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean matches(Map<String, ?> map) {
+            throw new UnsupportedOperationException();
         }
 
     }

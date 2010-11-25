@@ -104,7 +104,7 @@ public final class OSGiAssert {
     public static void assertServiceRegistrationCount(StubBundleContext bundleContext, Class<?> type, int count) {
         String typeName = type.getName();
         int found = 0;
-        for (ServiceRegistration serviceRegistration : bundleContext.getServiceRegistrations()) {
+        for (ServiceRegistration<?> serviceRegistration : bundleContext.getServiceRegistrations()) {
             String[] objectClasses = (String[]) serviceRegistration.getReference().getProperty(Constants.OBJECTCLASS);
             for (String objectClass : objectClasses) {
                 if (typeName.equals(objectClass)) {

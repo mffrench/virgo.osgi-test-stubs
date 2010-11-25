@@ -14,6 +14,7 @@ package org.eclipse.virgo.teststubs.osgi.support;
 import static org.eclipse.virgo.teststubs.osgi.internal.Assert.assertNotNull;
 
 import java.util.Dictionary;
+import java.util.Map;
 
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
@@ -52,23 +53,21 @@ public final class ObjectClassFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
-    public boolean match(ServiceReference reference) {
+    public boolean match(ServiceReference<?> reference) {
         return contains((String[]) reference.getProperty(Constants.OBJECTCLASS), this.className);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean match(Dictionary dictionary) {
+    public boolean match(Dictionary<String, ?> dictionary) {
         return contains((String[]) dictionary.get(Constants.OBJECTCLASS), this.className);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean matchCase(Dictionary dictionary) {
+    public boolean matchCase(Dictionary<String, ?> dictionary) {
         return match(dictionary);
     }
 
@@ -77,6 +76,13 @@ public final class ObjectClassFilter extends AbstractFilter {
      */
     public String getFilterString() {
         return String.format(FILTER_STRING_FORMAT, this.className);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean matches(Map<String, ?> map) {
+        return contains((String [])map.get(Constants.OBJECTCLASS), this.className);
     }
 
     private boolean contains(String[] strings, String toMatch) {
@@ -87,4 +93,5 @@ public final class ObjectClassFilter extends AbstractFilter {
         }
         return false;
     }
+    
 }

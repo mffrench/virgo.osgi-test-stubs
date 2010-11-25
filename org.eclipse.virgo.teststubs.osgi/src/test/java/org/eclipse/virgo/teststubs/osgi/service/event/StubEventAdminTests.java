@@ -22,6 +22,7 @@ import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -77,7 +78,7 @@ public class StubEventAdminTests {
     public void awaitSendingTimeout() {
         Event expected = new Event("topic", this.expectedProperties);
         
-        this.eventAdmin.sendEvent(new Event("differentTopic", null));
+        this.eventAdmin.sendEvent(new Event("differentTopic", (Map<String,?>)null));
         this.eventAdmin.postEvent(expected);
         
         long start = System.currentTimeMillis();
@@ -90,7 +91,7 @@ public class StubEventAdminTests {
     public void awaitPostingTimeout() {
         Event expected = new Event("topic", this.expectedProperties);
         
-        this.eventAdmin.postEvent(new Event("differentTopic", null));
+        this.eventAdmin.postEvent(new Event("differentTopic", (Map<String,?>)null));
         this.eventAdmin.sendEvent(expected);
         
         long start = System.currentTimeMillis();
@@ -197,7 +198,7 @@ public class StubEventAdminTests {
     @Test
     public void postEventMatchingOnTopic() {
         Event posted = new Event("topic", this.properties);
-        Event expected = new Event("topic", null);
+        Event expected = new Event("topic", (Map<String,?>)null);
 
         this.eventAdmin.postEvent(posted);
         assertNotNull(this.eventAdmin.awaitPostingOfEvent("topic", 1000));
@@ -206,7 +207,7 @@ public class StubEventAdminTests {
     @Test
     public void sendEventMatchingOnTopic() {
         Event sent = new Event("topic", this.properties);
-        Event expected = new Event("topic", null);
+        Event expected = new Event("topic", (Map<String,?>)null);
 
         this.eventAdmin.sendEvent(sent);
         assertNotNull(this.eventAdmin.awaitSendingOfEvent("topic", 1000));
@@ -216,7 +217,7 @@ public class StubEventAdminTests {
     public void awaitSendingTimeoutMatchingOnTopic() {
         Event expected = new Event("topic", this.expectedProperties);
         
-        this.eventAdmin.sendEvent(new Event("differentTopic", null));
+        this.eventAdmin.sendEvent(new Event("differentTopic", (Map<String,?>)null));
         this.eventAdmin.postEvent(expected);
         
         long start = System.currentTimeMillis();
@@ -229,7 +230,7 @@ public class StubEventAdminTests {
     public void awaitPostingTimeoutMatchingOnTopic() {
         Event expected = new Event("topic", this.expectedProperties);
         
-        this.eventAdmin.postEvent(new Event("differentTopic", null));
+        this.eventAdmin.postEvent(new Event("differentTopic", (Map<String,?>)null));
         this.eventAdmin.sendEvent(expected);
         
         long start = System.currentTimeMillis();

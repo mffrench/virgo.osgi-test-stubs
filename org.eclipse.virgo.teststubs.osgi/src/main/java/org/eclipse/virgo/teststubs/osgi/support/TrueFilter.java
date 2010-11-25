@@ -12,6 +12,7 @@
 package org.eclipse.virgo.teststubs.osgi.support;
 
 import java.util.Dictionary;
+import java.util.Map;
 
 import org.osgi.framework.Filter;
 import org.osgi.framework.ServiceReference;
@@ -43,33 +44,38 @@ public final class TrueFilter extends AbstractFilter {
         this.filterString = filterString;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean match(ServiceReference reference) {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public boolean match(Dictionary dictionary) {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public boolean matchCase(Dictionary dictionary) {
-        return true;
-    }
-
-    /**
+   /**
      * {@inheritDoc}
      */
     public String getFilterString() {
         return this.filterString;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean match(ServiceReference<?> reference) {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean match(Dictionary<String, ?> dictionary) {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean matchCase(Dictionary<String, ?> dictionary) {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean matches(Map<String, ?> map) {
+        return true;
     }
 }

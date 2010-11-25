@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.junit.Test;
 import org.osgi.service.event.Event;
@@ -116,12 +117,12 @@ public class EventUtilsTests {
     
     @Test
     public void eventsWithDifferentTopicsAreNotEqual() {
-        assertFalse(EventUtils.eventsAreEqual(new Event("foo", null), new Event("bar", null)));
+        assertFalse(EventUtils.eventsAreEqual(new Event("foo", (Map<String, ?>)null), new Event("bar", (Map<String, ?>)null)));
     }
     
     @Test
     public void eventsWithMatchingTopicsAndNoPropertiesAreEqual() {
-        assertTrue(EventUtils.eventsAreEqual(new Event("foo", null), new Event("foo", null)));
+        assertTrue(EventUtils.eventsAreEqual(new Event("foo", (Map<String, ?>)null), new Event("foo", (Map<String, ?>)null)));
     }
     
     @Test
@@ -131,7 +132,7 @@ public class EventUtilsTests {
     
     @Test
     public void eventsWithMatchingTopicsAndDifferentNumberOfPropertiesAreNotEqual() {
-        Dictionary properties = createProperties();
+        Dictionary<String, ?> properties = createProperties();
         properties.remove("byteArray");
         
         assertFalse(EventUtils.eventsAreEqual(new Event("foo", createProperties()), new Event("foo", properties)));
@@ -139,7 +140,7 @@ public class EventUtilsTests {
     
     @Test
     public void eventsWithMatchingTopicsAndDifferentPropertiesAreNotEqual() {
-        Dictionary properties = createProperties();
+        Dictionary<String, Object> properties = createProperties();
         properties.put("byteArray", new byte[] {6});
         
         assertFalse(EventUtils.eventsAreEqual(new Event("foo", createProperties()), new Event("foo", properties)));
@@ -150,9 +151,8 @@ public class EventUtilsTests {
         assertFalse(EventUtils.eventsAreEqual(new Event("foo", createProperties()), new Event("foo", properties)));
     }
     
-    @SuppressWarnings("unchecked")
-    private Dictionary createProperties() {
-        Dictionary properties = new Hashtable();
+    private Dictionary<String, Object> createProperties() {
+        Dictionary<String, Object> properties = new Hashtable<String, Object>();
         
         properties.put("object", "alpha");
         properties.put("booleanArray", new boolean[] {false, true});

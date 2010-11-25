@@ -19,8 +19,8 @@
 	<dependencies>
 		<dependency org="org.aspectj" name="com.springsource.org.aspectj.runtime" rev="${org.aspectj}" conf="compile->runtime"/>
 		<dependency org="org.junit" name="com.springsource.org.junit" rev="${org.junit}" conf="compile->runtime"/>
-		<dependency org="org.osgi" name="org.osgi.core" rev="${org.osgi}" conf="compile->runtime"/>
-		<dependency org="org.osgi" name="org.osgi.compendium" rev="${org.osgi}" conf="compile->runtime"/>
+		<dependency name='org.eclipse.osgi' rev='${org.eclipse.osgi}' org='org.eclipse.osgi' conf='compile->runtime'/>
+		<dependency org="org.eclipse.osgi" name="org.eclipse.osgi.services" rev="${org.eclipse.osgi.services}" conf="compile->runtime"/>
 	</dependencies>
 
 </ivy-module>

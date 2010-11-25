@@ -66,7 +66,7 @@ public class PropertiesFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
-    public boolean match(ServiceReference reference) {
+    public boolean match(ServiceReference<?> reference) {
         for (Entry<String, Object> entry : this.properties.entrySet()) {
             Object value = reference.getProperty(entry.getKey());
             if (value == null || !value.equals(entry.getValue())) {
@@ -79,8 +79,7 @@ public class PropertiesFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean match(Dictionary dictionary) {
+    public boolean match(Dictionary<String, ?> dictionary) {
         for (Entry<String, Object> entry : this.properties.entrySet()) {
             Object value = dictionary.get(entry.getKey());
             if (value == null || !value.equals(entry.getValue())) {
@@ -93,8 +92,7 @@ public class PropertiesFilter extends AbstractFilter {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean matchCase(Dictionary dictionary) {
+    public boolean matchCase(Dictionary<String, ?> dictionary) {
         return match(dictionary);
     }
 
@@ -128,5 +126,18 @@ public class PropertiesFilter extends AbstractFilter {
         }
 
         return properties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean matches(Map<String, ?> map) {
+        for (Entry<String, Object> entry : this.properties.entrySet()) {
+            Object value = map.get(entry.getKey());
+            if (value == null || !value.equals(entry.getValue())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

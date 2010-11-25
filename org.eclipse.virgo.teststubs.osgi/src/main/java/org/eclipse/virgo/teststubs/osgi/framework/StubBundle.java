@@ -14,9 +14,11 @@ package org.eclipse.virgo.teststubs.osgi.framework;
 import static org.eclipse.virgo.teststubs.osgi.internal.Assert.assertNotNull;
 import static org.eclipse.virgo.teststubs.osgi.internal.Duplicator.shallowCopy;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -32,7 +34,8 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 
 /**
- * A stub testing implementation of {@link Bundle} as defined in section 6.1.4 of the OSGi Service Platform Core Specification.
+ * A stub testing implementation of {@link Bundle} as defined in section 6.1.4 of the OSGi Service Platform Core
+ * Specification.
  * <p />
  * 
  * <strong>Concurrent Semantics</strong><br />
@@ -709,6 +712,50 @@ public final class StubBundle implements Bundle {
         if (initialState == Bundle.ACTIVE || initialState == Bundle.STARTING || initialState == Bundle.STOPPING) {
             this.stop();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(Bundle o) {
+        int bundleIdCompare = (new Long(o.getBundleId())).compareTo(this.bundleId);
+        if (bundleIdCompare != 0) {
+            return bundleIdCompare;
+        }
+        int symbolicNameCompare = o.getSymbolicName().compareTo(this.symbolicName);
+        if (symbolicNameCompare != 0) {
+            return symbolicNameCompare;
+        }
+        int bundleVersionCompare = o.getVersion().compareTo(this.version);
+        if (bundleVersionCompare != 0) {
+            return bundleVersionCompare;
+        }
+        int bundleLocationCompare = o.getLocation().compareTo(this.location);
+        if (bundleLocationCompare != 0) {
+            return bundleLocationCompare;
+        }
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<X509Certificate, List<X509Certificate>> getSignerCertificates(int signersType) {
+        return new HashMap<X509Certificate, List<X509Certificate>>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public <A> A adapt(Class<A> type) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public File getDataFile(String filename) {
+        return null;
     }
 
 }
