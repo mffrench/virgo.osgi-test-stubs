@@ -106,6 +106,7 @@ public final class StubConfigurationAdmin implements ConfigurationAdmin {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public Configuration[] listConfigurations(String filter) throws IOException, InvalidSyntaxException {
         synchronized (this.configurationsMonitor) {
             Set<Configuration> matches = new HashSet<Configuration>();

@@ -32,11 +32,12 @@ import org.osgi.framework.ServiceRegistration;
  * 
  * Threadsafe
  * 
+ * @param <S> ServiceRegistration type
+ * 
  */
-public final class StubServiceRegistration implements ServiceRegistration {
+public final class StubServiceRegistration<S> implements ServiceRegistration<S> {
 
-    @SuppressWarnings("unchecked")
-    private volatile Dictionary properties = new Hashtable();
+    private volatile Dictionary<String, Object> properties = new Hashtable<String, Object>();
 
     private final Object propertiesMonitor = new Object();
 
@@ -48,7 +49,7 @@ public final class StubServiceRegistration implements ServiceRegistration {
 
     private final String[] objectClasses;
 
-    private volatile StubServiceReference serviceReference;
+    private volatile StubServiceReference<S> serviceReference;
 
     private final Object serviceReferenceMonitor = new Object();
 
@@ -63,14 +64,14 @@ public final class StubServiceRegistration implements ServiceRegistration {
 
         this.bundleContext = bundleContext;
         this.objectClasses = objectClasses;
-        this.serviceReference = new StubServiceReference(this);
+        this.serviceReference = new StubServiceReference<S>(this);
         populateDefaultProperties(this.properties);
     }
 
     /**
      * {@inheritDoc}
      */
-    public ServiceReference getReference() {
+    public ServiceReference<S> getReference() {
         synchronized (this.serviceReferenceMonitor) {
             return this.serviceReference;
         }
@@ -83,7 +84,7 @@ public final class StubServiceRegistration implements ServiceRegistration {
      * 
      * @return <code>this</code> instance of the {@link StubServiceRegistration}
      */
-    public StubServiceRegistration setServiceReference(StubServiceReference serviceReference) {
+    public StubServiceRegistration<S> setServiceReference(StubServiceReference<S> serviceReference) {
         assertNotNull(serviceReference, "serviceReference");
         synchronized (this.serviceReferenceMonitor) {
             this.serviceReference = serviceReference;
@@ -100,13 +101,13 @@ public final class StubServiceRegistration implements ServiceRegistration {
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public void setProperties(Dictionary properties) {
+    public void setProperties(Dictionary<String, ?> properties) {
         if (properties == null) {
             return;
         }
 
         synchronized (this.propertiesMonitor) {
-            this.properties = properties;
+            this.properties = (Dictionary<String, Object>) properties;
             populateDefaultProperties(this.properties);
         }
     }
@@ -117,8 +118,7 @@ public final class StubServiceRegistration implements ServiceRegistration {
      * @return The properties last passed in with a call to {@link #setProperties(Dictionary)} or <code>null</code> if
      *         {@link #setProperties(Dictionary)} has not been called
      */
-    @SuppressWarnings("unchecked")
-    public Dictionary getProperties() {
+    public Dictionary<String, Object> getProperties() {
         synchronized (this.propertiesMonitor) {
             return shallowCopy(this.properties);
         }
@@ -167,8 +167,7 @@ public final class StubServiceRegistration implements ServiceRegistration {
             this.properties);
     }
 
-    @SuppressWarnings("unchecked")
-    private void populateDefaultProperties(Dictionary properties) {
+    private void populateDefaultProperties(Dictionary<String, Object> properties) {
         synchronized (this.serviceReferenceMonitor) {
             properties.put(Constants.SERVICE_ID, this.serviceReference.getServiceId());
             properties.put(Constants.SERVICE_RANKING, this.serviceReference.getServiceRanking());

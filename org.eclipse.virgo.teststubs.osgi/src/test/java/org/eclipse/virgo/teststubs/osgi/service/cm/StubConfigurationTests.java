@@ -103,7 +103,7 @@ public class StubConfigurationTests {
 
     @Test
     public void addProperty() throws IOException {
-        this.config.update(new Hashtable());
+        this.config.update(new Hashtable<String, String>());
         this.config.addProperty("test1", "test2");
         assertEquals(2, this.config.getProperties().size());
         assertEquals("test2", this.config.getProperties().get("test1"));
@@ -119,10 +119,10 @@ public class StubConfigurationTests {
     @SuppressWarnings("unchecked")
     @Test
     public void getProperties() throws IOException {
-        this.config.update(new Hashtable());
+        this.config.update(new Hashtable<String, String>());
 
-        Dictionary properties1 = this.config.getProperties();
-        Dictionary properties2 = this.config.getProperties();
+        Dictionary<String, String> properties1 = this.config.getProperties();
+        Dictionary<String, String> properties2 = this.config.getProperties();
         assertNotSame(properties1, properties2);
         properties2.put("test3", "test4");
         assertFalse(properties2.equals(this.config.getProperties()));

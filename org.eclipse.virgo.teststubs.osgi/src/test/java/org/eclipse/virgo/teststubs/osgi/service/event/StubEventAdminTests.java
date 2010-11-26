@@ -34,15 +34,12 @@ public class StubEventAdminTests {
 
     private final StubEventAdmin eventAdmin = new StubEventAdmin();
     
-    @SuppressWarnings("unchecked")
-    private final Dictionary properties = createProperties();
+    private final Dictionary<String, ?> properties = createProperties();
     
-    @SuppressWarnings("unchecked")
-    private final Dictionary expectedProperties = createProperties();
+    private final Dictionary<String, ?> expectedProperties = createProperties();
     
-    @SuppressWarnings("unchecked")
-    private Dictionary createProperties() {
-        Dictionary properties = new Hashtable();
+    private Dictionary<String, ?> createProperties() {
+        Dictionary<String, Object> properties = new Hashtable<String, Object>();
         
         properties.put("booleanArray", new boolean[] {false, true});
         properties.put("byteArray", new byte[] {1, 2});
@@ -198,7 +195,6 @@ public class StubEventAdminTests {
     @Test
     public void postEventMatchingOnTopic() {
         Event posted = new Event("topic", this.properties);
-        Event expected = new Event("topic", (Map<String,?>)null);
 
         this.eventAdmin.postEvent(posted);
         assertNotNull(this.eventAdmin.awaitPostingOfEvent("topic", 1000));
@@ -207,7 +203,6 @@ public class StubEventAdminTests {
     @Test
     public void sendEventMatchingOnTopic() {
         Event sent = new Event("topic", this.properties);
-        Event expected = new Event("topic", (Map<String,?>)null);
 
         this.eventAdmin.sendEvent(sent);
         assertNotNull(this.eventAdmin.awaitSendingOfEvent("topic", 1000));
@@ -242,7 +237,6 @@ public class StubEventAdminTests {
     @Test
     public void postingOfEventWhileWaitingMatchingOnTopic() throws InterruptedException {
         Event posted = new Event("topic", this.properties);
-        final Event expected = new Event("topic", this.expectedProperties);
 
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -265,7 +259,6 @@ public class StubEventAdminTests {
     @Test
     public void sendingOfEventWhileWaitingMatchingOnTopic() throws InterruptedException {
         Event posted = new Event("topic", this.properties);
-        final Event expected = new Event("topic", this.expectedProperties);
 
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -288,7 +281,6 @@ public class StubEventAdminTests {
     @Test
     public void removalOfPostedEventWhenSuccessfullyAwaitedMatchingOnTopic() {
         Event posted = new Event("topic", this.properties);
-        Event expected = new Event("topic", this.expectedProperties);
 
         this.eventAdmin.postEvent(posted);
         assertNotNull(this.eventAdmin.awaitPostingOfEvent("topic", 1000));
@@ -298,7 +290,6 @@ public class StubEventAdminTests {
     @Test
     public void removalOfSentEventWhenSuccessfullyAwaitedMatchingOnTopic() {
         Event sent = new Event("topic", this.properties);
-        Event expected = new Event("topic", this.expectedProperties);
 
         this.eventAdmin.sendEvent(sent);
         assertNotNull(this.eventAdmin.awaitSendingOfEvent("topic", 1000));

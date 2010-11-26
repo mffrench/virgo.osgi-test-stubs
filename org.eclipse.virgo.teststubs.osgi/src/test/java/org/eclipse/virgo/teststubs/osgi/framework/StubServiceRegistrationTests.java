@@ -28,7 +28,7 @@ import org.osgi.framework.ServiceReference;
 
 public class StubServiceRegistrationTests {
 
-    private StubServiceRegistration reg = new StubServiceRegistration(new StubBundleContext(new StubBundle()));
+    private StubServiceRegistration<Object> reg = new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle()));
 
     @Test
     public void initialState() {
@@ -39,7 +39,7 @@ public class StubServiceRegistrationTests {
 
     @Test
     public void getCustomReference() {
-        StubServiceReference ref = new StubServiceReference(1L, 1, reg);
+        StubServiceReference<Object> ref = new StubServiceReference<Object>(1L, 1, reg);
         this.reg.setServiceReference(ref);
         assertSame(ref, this.reg.getReference());
     }
@@ -55,7 +55,7 @@ public class StubServiceRegistrationTests {
     public void getCustomProperties() {
         TestServiceListener listener = new TestServiceListener();
         this.reg.getBundleContext().addServiceListener(listener);
-        Dictionary testDictionary = new Hashtable();
+        Dictionary<String, String> testDictionary = new Hashtable<String, String>();
         testDictionary.put("testKey", "testValue");
         this.reg.setProperties(testDictionary);
         assertNotNull(listener.getEvent());
@@ -64,10 +64,9 @@ public class StubServiceRegistrationTests {
         assertEquals("testValue", this.reg.getProperties().get("testKey"));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void setPropertiesNull() {
-        Dictionary initial = this.reg.getProperties();
+        Dictionary<String, Object> initial = this.reg.getProperties();
         this.reg.setProperties(null);
         assertEquals(initial, this.reg.getProperties());
     }
@@ -77,7 +76,7 @@ public class StubServiceRegistrationTests {
         this.reg.getBundleContext().getContextBundle().start();
         TestServiceListener listener = new TestServiceListener();
         this.reg.getBundleContext().addServiceListener(listener);
-        ServiceReference ref = this.reg.getReference();
+        ServiceReference<?> ref = this.reg.getReference();
         this.reg.unregister();
         assertNotNull(listener.getEvent());
         assertEquals(ServiceEvent.UNREGISTERING, listener.getEvent().getType());

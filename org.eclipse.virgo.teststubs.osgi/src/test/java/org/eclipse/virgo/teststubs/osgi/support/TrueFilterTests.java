@@ -11,7 +11,6 @@
 
 package org.eclipse.virgo.teststubs.osgi.support;
 
-import static org.eclipse.virgo.teststubs.osgi.AdditionalAsserts.assertContains;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -24,11 +23,10 @@ public class TrueFilterTests {
 
     private final TrueFilter filter = new TrueFilter();
 
-    @SuppressWarnings("unchecked")
     @Test
     public void match() {
-        assertTrue(filter.match((Dictionary) null));
-        assertTrue(filter.match((ServiceReference) null));
+        assertTrue(filter.match((Dictionary<String, ?>) null));
+        assertTrue(filter.match((ServiceReference<?>) null));
         assertTrue(filter.matchCase(null));
     }
 

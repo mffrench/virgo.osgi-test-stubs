@@ -73,9 +73,9 @@ public final class StubBundleContext implements BundleContext {
 
     private final Object installedBundlesMonitor = new Object();
 
-    private final List<StubServiceRegistration> serviceRegistrations = new ArrayList<StubServiceRegistration>();
+    private final List<StubServiceRegistration<Object>> serviceRegistrations = new ArrayList<StubServiceRegistration<Object>>();
 
-    private final Map<StubServiceReference, Object> services = new HashMap<StubServiceReference, Object>();
+    private final Map<StubServiceReference<Object>, Object> services = new HashMap<StubServiceReference<Object>, Object>();
 
     private final Object servicesMonitor = new Object();
 
@@ -192,7 +192,7 @@ public final class StubBundleContext implements BundleContext {
     /**
      * {@inheritDoc}
      */
-    public ServiceReference[] getAllServiceReferences(String clazz, String filter) throws InvalidSyntaxException {
+    public ServiceReference<?>[] getAllServiceReferences(String clazz, String filter) throws InvalidSyntaxException {
         return getServiceReferences(clazz, filter);
     }
 
@@ -288,6 +288,7 @@ public final class StubBundleContext implements BundleContext {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public <S> S getService(ServiceReference<S> reference) {
         synchronized (this.servicesMonitor) {
             if (serviceUnregistered(reference)) {
@@ -322,12 +323,12 @@ public final class StubBundleContext implements BundleContext {
     /**
      * {@inheritDoc}
      */
-    public ServiceReference[] getServiceReferences(String clazz, String filter) throws InvalidSyntaxException {
+    public ServiceReference<?>[] getServiceReferences(String clazz, String filter) throws InvalidSyntaxException {
         synchronized (this.servicesMonitor) {
-            List<ServiceReference> candidateReferences = new ArrayList<ServiceReference>();
+            List<ServiceReference<?>> candidateReferences = new ArrayList<ServiceReference<?>>();
 
             Filter f = getFilter(filter);
-            for (ServiceReference serviceReference : this.services.keySet()) {
+            for (ServiceReference<?> serviceReference : this.services.keySet()) {
                 String[] objectClasses = (String[]) serviceReference.getProperty(Constants.OBJECTCLASS);
                 if (f.match(serviceReference) && matchesClass(clazz, objectClasses)) {
                     candidateReferences.add(serviceReference);
@@ -396,15 +397,14 @@ public final class StubBundleContext implements BundleContext {
         return serviceRegistration;
     }
 
-    @SuppressWarnings("unchecked")
-    private StubServiceRegistration createServiceRegistration(String[] clazzes, Dictionary properties) {
-        StubServiceRegistration serviceRegistration = new StubServiceRegistration(this, clazzes);
+    private StubServiceRegistration<Object> createServiceRegistration(String[] clazzes, Dictionary<String, ?> properties) {
+        StubServiceRegistration<Object> serviceRegistration = new StubServiceRegistration<Object>(this, clazzes);
         serviceRegistration.setProperties(properties);
         return serviceRegistration;
     }
 
-    private StubServiceReference createServiceReference(String[] clazzes, Object service, StubServiceRegistration serviceRegistration) {
-        StubServiceReference serviceReference = new StubServiceReference(serviceRegistration);
+    private <S> StubServiceReference<S> createServiceReference(String[] clazzes, Object service, StubServiceRegistration<S> serviceRegistration) {
+        StubServiceReference<S> serviceReference = new StubServiceReference<S>(serviceRegistration);
         serviceRegistration.setServiceReference(serviceReference);
         return serviceReference;
     }
@@ -412,7 +412,6 @@ public final class StubBundleContext implements BundleContext {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public ServiceRegistration<?> registerService(String clazz, Object service, Dictionary<String, ?> properties) {
         return registerService(new String[] { clazz }, service, properties);
     }
@@ -422,7 +421,7 @@ public final class StubBundleContext implements BundleContext {
      * 
      * @return The collection of {@link ServiceRegistration}s
      */
-    public List<StubServiceRegistration> getServiceRegistrations() {
+    public List<StubServiceRegistration<Object>> getServiceRegistrations() {
         synchronized (this.servicesMonitor) {
             return shallowCopy(this.serviceRegistrations);
         }
@@ -435,7 +434,7 @@ public final class StubBundleContext implements BundleContext {
      * @param serviceRegistrations The service registrations to remove
      * @return <code>this</code> instance of the {@link StubBundleContext}
      */
-    public StubBundleContext removeRegisteredService(ServiceRegistration... serviceRegistrations) {
+    public StubBundleContext removeRegisteredService(ServiceRegistration<?>... serviceRegistrations) {
         synchronized (this.servicesMonitor) {
             this.serviceRegistrations.removeAll(Arrays.asList(serviceRegistrations));
             return this;
@@ -519,8 +518,8 @@ public final class StubBundleContext implements BundleContext {
         }
     }
 
-    private boolean serviceUnregistered(ServiceReference reference) {
-        return ((StubServiceReference) reference).getServiceRegistration().getUnregistered();
+    private boolean serviceUnregistered(ServiceReference<?> reference) {
+        return ((StubServiceReference<?>) reference).getServiceRegistration().getUnregistered();
     }
 
     /**

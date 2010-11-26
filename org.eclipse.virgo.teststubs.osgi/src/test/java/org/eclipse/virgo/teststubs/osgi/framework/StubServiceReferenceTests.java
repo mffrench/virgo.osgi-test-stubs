@@ -27,7 +27,7 @@ import org.osgi.framework.ServiceReference;
 
 public class StubServiceReferenceTests {
 
-    private StubServiceReference ref = new StubServiceReference(new StubServiceRegistration(new StubBundleContext(new StubBundle())));
+    private StubServiceReference<Object> ref = new StubServiceReference<Object>(new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
 
     @Test
     public void initialState() {
@@ -41,10 +41,10 @@ public class StubServiceReferenceTests {
 
     @Test
     public void compareSameId() {
-        StubServiceReference r1 = new StubServiceReference(0L, 0, new StubServiceRegistration(new StubBundleContext(new StubBundle())));
-        StubServiceReference r2 = new StubServiceReference(0L, 0, new StubServiceRegistration(new StubBundleContext(new StubBundle())));
+        StubServiceReference<Object> r1 = new StubServiceReference<Object>(0L, 0, new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
+        StubServiceReference<Object> r2 = new StubServiceReference<Object>(0L, 0, new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
         assertTrue(0 == r1.compareTo(r2));
-        ServiceReference[] array = new ServiceReference[] { r2, r1 };
+        ServiceReference<?>[] array = new ServiceReference<?>[] { r2, r1 };
         Arrays.sort(array);
         assertSame(r2, array[0]);
         assertSame(r1, array[1]);
@@ -52,12 +52,12 @@ public class StubServiceReferenceTests {
 
     @Test
     public void compareDifferentRanking() {
-        StubServiceReference r1 = new StubServiceReference(0L, 0, new StubServiceRegistration(new StubBundleContext(new StubBundle())));
-        StubServiceReference r2 = new StubServiceReference(1L, 1, new StubServiceRegistration(new StubBundleContext(new StubBundle())));
+        StubServiceReference<Object> r1 = new StubServiceReference<Object>(0L, 0, new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
+        StubServiceReference<Object> r2 = new StubServiceReference<Object>(1L, 1, new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
         assertTrue(0 > r1.compareTo(r2));
         assertTrue(0 < r2.compareTo(r1));
 
-        ServiceReference[] array = new ServiceReference[] { r2, r1 };
+        ServiceReference<?>[] array = new ServiceReference[] { r2, r1 };
         Arrays.sort(array);
         assertSame(r1, array[0]);
         assertSame(r2, array[1]);
@@ -65,11 +65,11 @@ public class StubServiceReferenceTests {
 
     @Test
     public void compareDifferentId() {
-        StubServiceReference r1 = new StubServiceReference(0L, 0, new StubServiceRegistration(new StubBundleContext(new StubBundle())));
-        StubServiceReference r2 = new StubServiceReference(1L, 0, new StubServiceRegistration(new StubBundleContext(new StubBundle())));
+        StubServiceReference<Object> r1 = new StubServiceReference<Object>(0L, 0, new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
+        StubServiceReference<Object> r2 = new StubServiceReference<Object>(1L, 0, new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
         assertTrue(0 > r1.compareTo(r2));
         assertTrue(0 < r2.compareTo(r1));
-        ServiceReference[] array = new ServiceReference[] { r2, r1 };
+        ServiceReference<?>[] array = new ServiceReference[] { r2, r1 };
         Arrays.sort(array);
         assertSame(r1, array[0]);
         assertSame(r2, array[1]);
@@ -128,7 +128,7 @@ public class StubServiceReferenceTests {
 
     @Test
     public void testHashCode() {
-        StubServiceReference ref2 = new StubServiceReference(new StubServiceRegistration(new StubBundleContext(new StubBundle())));
+        StubServiceReference<Object> ref2 = new StubServiceReference<Object>(new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())));
         assertFalse(31 == ref2.hashCode());
     }
 
@@ -138,8 +138,8 @@ public class StubServiceReferenceTests {
         assertFalse(this.ref.equals(null));
         assertFalse(this.ref.equals(new Object()));
 
-        assertFalse(this.ref.equals(new StubServiceReference(new StubServiceRegistration(new StubBundleContext(new StubBundle())))));
-        assertTrue(this.ref.equals(new StubServiceReference(this.ref.getServiceRegistration())));
+        assertFalse(this.ref.equals(new StubServiceReference<Object>(new StubServiceRegistration<Object>(new StubBundleContext(new StubBundle())))));
+        assertTrue(this.ref.equals(new StubServiceReference<Object>(this.ref.getServiceRegistration())));
     }
 
     @Test

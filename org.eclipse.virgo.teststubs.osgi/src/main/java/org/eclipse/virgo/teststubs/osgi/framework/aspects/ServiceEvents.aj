@@ -49,7 +49,7 @@ public final aspect ServiceEvents {
      * 
      * @param registration The {@link ServiceRegistration} to send the event against
      */
-    after(StubBundleContext context) returning (ServiceRegistration registration) :
+    after(StubBundleContext context) returning (ServiceRegistration<?> registration) :
             this(context) &&
             execution(* org.eclipse.virgo.teststubs.osgi.framework.StubBundleContext.registerService(java.lang.String[], java.lang.Object, java.util.Dictionary)) {
         sendEvent(context.getServiceListeners(), new ServiceEvent(ServiceEvent.REGISTERED, registration.getReference()));

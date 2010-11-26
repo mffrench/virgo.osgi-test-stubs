@@ -73,18 +73,15 @@ public final class StubBundle implements Bundle {
 
     private final Object bundleContextMonitor = new Object();
 
-    @SuppressWarnings("unchecked")
-    private volatile Dictionary headers = new Hashtable();
+    private volatile Dictionary<String, String> headers = new Hashtable<String, String>();
 
     private final Object headersMonitor = new Object();
 
-    @SuppressWarnings("unchecked")
-    private volatile Dictionary localizedHeaders = new Hashtable();
+    private volatile Dictionary<String, String> localizedHeaders = new Hashtable<String, String>();
 
     private final Object localizedHeadersMonitor = new Object();
 
-    @SuppressWarnings("unchecked")
-    private final Map<String, Class> loadClasses = new HashMap<String, Class>();
+    private final Map<String, Class<?>> loadClasses = new HashMap<String, Class<?>>();
 
     private final Object loadClassesMonitor = new Object();
 
@@ -92,8 +89,7 @@ public final class StubBundle implements Bundle {
 
     private final Object entriesMonitor = new Object();
 
-    @SuppressWarnings("unchecked")
-    private final Map<String, Enumeration> entryPaths = new HashMap<String, Enumeration>();
+    private final Map<String, Enumeration<String>> entryPaths = new HashMap<String, Enumeration<String>>();
 
     private final Object entryPathsMonitor = new Object();
 
@@ -105,8 +101,7 @@ public final class StubBundle implements Bundle {
 
     private final Object resourceMonitor = new Object();
 
-    @SuppressWarnings("unchecked")
-    private final Map<String, Enumeration> resources = new HashMap<String, Enumeration>();
+    private final Map<String, Enumeration<URL>> resources = new HashMap<String, Enumeration<URL>>();
 
     private final Object resourcesMonitor = new Object();
 
@@ -114,11 +109,11 @@ public final class StubBundle implements Bundle {
 
     private final Object findEntriesMonitor = new Object();
 
-    private final List<StubServiceReference> registeredServices = new ArrayList<StubServiceReference>();
+    private final List<StubServiceReference<Object>> registeredServices = new ArrayList<StubServiceReference<Object>>();
 
     private final Object registeredServicesMonitor = new Object();
 
-    private final List<StubServiceReference> servicesInUse = new ArrayList<StubServiceReference>();
+    private final List<StubServiceReference<Object>> servicesInUse = new ArrayList<StubServiceReference<Object>>();
 
     private final Object servicesInUseMonitor = new Object();
 
@@ -173,7 +168,7 @@ public final class StubBundle implements Bundle {
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public Enumeration findEntries(String path, String filePattern, boolean recurse) {
+    public Enumeration<URL> findEntries(String path, String filePattern, boolean recurse) {
         synchronized (this.findEntriesMonitor) {
             if (this.findEntriesDelegate != null) {
                 return this.findEntriesDelegate.findEntries(path, filePattern, recurse);
@@ -254,8 +249,7 @@ public final class StubBundle implements Bundle {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public Enumeration getEntryPaths(String path) {
+    public Enumeration<String> getEntryPaths(String path) {
         synchronized (this.entryPathsMonitor) {
             return this.entryPaths.get(path);
         }
@@ -268,8 +262,7 @@ public final class StubBundle implements Bundle {
      * @param paths The {@link Enumeration} to map to
      * @return <code>this</code> instance of the {@link StubBundle}
      */
-    @SuppressWarnings("unchecked")
-    public StubBundle addEntryPaths(String path, Enumeration paths) {
+    public StubBundle addEntryPaths(String path, Enumeration<String> paths) {
         synchronized (this.entryPathsMonitor) {
             this.entryPaths.put(path, paths);
             return this;
@@ -279,8 +272,7 @@ public final class StubBundle implements Bundle {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public Dictionary getHeaders() {
+    public Dictionary<String, String> getHeaders() {
         synchronized (this.headersMonitor) {
             return shallowCopy(this.headers);
         }
@@ -294,7 +286,6 @@ public final class StubBundle implements Bundle {
      * 
      * @return <code>this</code> instance of the {@link StubBundle}
      */
-    @SuppressWarnings("unchecked")
     public StubBundle addHeader(String key, String value) {
         synchronized (this.headersMonitor) {
             this.headers.put(key, value);
@@ -305,8 +296,7 @@ public final class StubBundle implements Bundle {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public Dictionary getHeaders(String locale) {
+    public Dictionary<String, String> getHeaders(String locale) {
         synchronized (this.localizedHeadersMonitor) {
             return shallowCopy(this.localizedHeaders);
         }
@@ -319,8 +309,7 @@ public final class StubBundle implements Bundle {
      * 
      * @return <code>this</code> instance of the {@link StubBundle}
      */
-    @SuppressWarnings("unchecked")
-    public StubBundle setLocalizedHeaders(Dictionary dictionary) {
+    public StubBundle setLocalizedHeaders(Dictionary<String, String> dictionary) {
         synchronized (this.localizedHeadersMonitor) {
             this.localizedHeaders = dictionary;
             return this;
@@ -360,7 +349,7 @@ public final class StubBundle implements Bundle {
     /**
      * {@inheritDoc}
      */
-    public ServiceReference[] getRegisteredServices() {
+    public ServiceReference<?>[] getRegisteredServices() {
         synchronized (this.registeredServicesMonitor) {
             if (this.registeredServices.isEmpty()) {
                 return null;
@@ -375,9 +364,9 @@ public final class StubBundle implements Bundle {
      * @param serviceReferences The {@link ServiceReference}s
      * @return <code>this</code> instance of the {@link StubBundle}
      */
-    public StubBundle addRegisteredService(StubServiceReference... serviceReferences) {
+    public StubBundle addRegisteredService(StubServiceReference<Object>... serviceReferences) {
         synchronized (this.registeredServicesMonitor) {
-            for (StubServiceReference serviceReference : serviceReferences) {
+            for (StubServiceReference<Object> serviceReference : serviceReferences) {
                 serviceReference.setBundle(this);
                 this.registeredServices.add(serviceReference);
             }
@@ -411,8 +400,7 @@ public final class StubBundle implements Bundle {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public Enumeration getResources(String name) throws IOException {
+    public Enumeration<URL> getResources(String name) throws IOException {
         synchronized (this.resourcesMonitor) {
             return this.resources.get(name);
         }
@@ -425,8 +413,7 @@ public final class StubBundle implements Bundle {
      * @param resources The {@link Enumeration} to map to
      * @return <code>this</code> instance of the {@link StubBundle}
      */
-    @SuppressWarnings("unchecked")
-    public StubBundle addResources(String name, Enumeration resources) {
+    public StubBundle addResources(String name, Enumeration<URL> resources) {
         synchronized (this.resourcesMonitor) {
             this.resources.put(name, resources);
             return this;
@@ -436,7 +423,7 @@ public final class StubBundle implements Bundle {
     /**
      * {@inheritDoc}
      */
-    public ServiceReference[] getServicesInUse() {
+    public ServiceReference<?>[] getServicesInUse() {
         synchronized (this.servicesInUseMonitor) {
             if (this.servicesInUse.isEmpty()) {
                 return null;
@@ -451,9 +438,9 @@ public final class StubBundle implements Bundle {
      * @param serviceReferences The {@link ServiceReference}s
      * @return <code>this</code> instance of the {@link StubBundle}
      */
-    public StubBundle addServiceInUse(StubServiceReference... serviceReferences) {
+    public StubBundle addServiceInUse(StubServiceReference<Object>... serviceReferences) {
         synchronized (this.servicesInUseMonitor) {
-            for (StubServiceReference serviceReference : serviceReferences) {
+            for (StubServiceReference<Object> serviceReference : serviceReferences) {
                 serviceReference.addUsingBundles(this);
                 this.servicesInUse.add(serviceReference);
             }
@@ -529,8 +516,7 @@ public final class StubBundle implements Bundle {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public Class loadClass(String name) throws ClassNotFoundException {
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
         synchronized (this.loadClassesMonitor) {
             if (this.loadClasses.containsKey(name)) {
                 return this.loadClasses.get(name);
@@ -546,8 +532,7 @@ public final class StubBundle implements Bundle {
      * @param clazz The class to map to
      * @return <code>this</code> instance of the {@link StubBundle}
      */
-    @SuppressWarnings("unchecked")
-    public StubBundle addLoadClass(String name, Class clazz) {
+    public StubBundle addLoadClass(String name, Class<?> clazz) {
         synchronized (this.loadClassesMonitor) {
             this.loadClasses.put(name, clazz);
             return this;
@@ -593,14 +578,14 @@ public final class StubBundle implements Bundle {
 
             setState(STOPPING);
             synchronized (this.registeredServicesMonitor) {
-                for (StubServiceReference serviceReference : this.registeredServices) {
+                for (StubServiceReference<Object> serviceReference : this.registeredServices) {
                     serviceReference.setBundle(null);
                 }
                 this.registeredServices.clear();
             }
 
             synchronized (this.servicesInUseMonitor) {
-                for (StubServiceReference serviceReference : this.servicesInUse) {
+                for (StubServiceReference<Object> serviceReference : this.servicesInUse) {
                     serviceReference.removeUsingBundles(this);
                 }
                 this.servicesInUse.clear();

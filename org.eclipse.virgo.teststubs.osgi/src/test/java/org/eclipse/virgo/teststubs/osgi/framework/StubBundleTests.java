@@ -154,7 +154,7 @@ public class StubBundleTests {
 
     @Test(expected = IllegalStateException.class)
     public void getEntryPathsUninstalled() throws BundleException, MalformedURLException {
-        this.bundle.addEntryPaths("testPath", new TestEnumeration());
+        this.bundle.addEntryPaths("testPath", new TestEnumeration<String>());
         this.bundle.uninstall();
         this.bundle.getEntryPaths("testPath");
     }
@@ -162,7 +162,7 @@ public class StubBundleTests {
     @Test
     public void getEntryPaths() throws MalformedURLException {
         assertNull(this.bundle.getEntryPaths("testPath"));
-        this.bundle.addEntryPaths("testPath", new TestEnumeration());
+        this.bundle.addEntryPaths("testPath", new TestEnumeration<String>());
         assertNotNull(this.bundle.getEntryPaths("testPath"));
     }
 
@@ -196,7 +196,7 @@ public class StubBundleTests {
 
     @Test(expected = IllegalStateException.class)
     public void getResourcesUninstalled() throws BundleException, IOException {
-        this.bundle.addResources("testName", new TestEnumeration());
+        this.bundle.addResources("testName", new TestEnumeration<URL>());
         this.bundle.uninstall();
         this.bundle.getResources("testName");
     }
@@ -204,7 +204,7 @@ public class StubBundleTests {
     @Test
     public void getResources() throws IOException {
         assertNull(this.bundle.getResources("testName"));
-        this.bundle.addResources("testName", new TestEnumeration());
+        this.bundle.addResources("testName", new TestEnumeration<URL>());
         assertNotNull(this.bundle.getResources("testName"));
     }
 
@@ -224,16 +224,18 @@ public class StubBundleTests {
         assertNull(this.bundle.getRegisteredServices());
     }
 
+    @SuppressWarnings("unchecked")
     @Test(expected = IllegalStateException.class)
     public void getRegisteredServicesUninstalled() throws BundleException {
-        this.bundle.addRegisteredService(new StubServiceReference(new StubServiceRegistration(new StubBundleContext(this.bundle))));
+        this.bundle.addRegisteredService(new StubServiceReference(new StubServiceRegistration<Object>(new StubBundleContext(this.bundle))));
         this.bundle.uninstall();
         this.bundle.getRegisteredServices();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void getRegisteredServices() {
-        this.bundle.addRegisteredService(new StubServiceReference(new StubServiceRegistration(new StubBundleContext(this.bundle))));
+        this.bundle.addRegisteredService(new StubServiceReference(new StubServiceRegistration<Object>(new StubBundleContext(this.bundle))));
         assertNotNull(this.bundle.getRegisteredServices());
     }
 
@@ -242,16 +244,18 @@ public class StubBundleTests {
         assertNull(this.bundle.getServicesInUse());
     }
 
+    @SuppressWarnings("unchecked")
     @Test(expected = IllegalStateException.class)
     public void getServicesInUseUninstalled() throws BundleException {
-        this.bundle.addServiceInUse(new StubServiceReference(new StubServiceRegistration(new StubBundleContext(this.bundle))));
+        this.bundle.addServiceInUse(new StubServiceReference(new StubServiceRegistration<Object>(new StubBundleContext(this.bundle))));
         this.bundle.uninstall();
         this.bundle.getServicesInUse();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void getServicesInUse() {
-        this.bundle.addServiceInUse(new StubServiceReference(new StubServiceRegistration(new StubBundleContext(this.bundle))));
+        this.bundle.addServiceInUse(new StubServiceReference(new StubServiceRegistration<Object>(new StubBundleContext(this.bundle))));
         assertNotNull(this.bundle.getServicesInUse());
     }
 
@@ -387,7 +391,7 @@ public class StubBundleTests {
     public void stop() throws BundleException {
         TestBundleListener listener = new TestBundleListener();
         this.bundle.getBundleContext().addBundleListener(listener);
-        StubServiceReference reference = new StubServiceReference(new StubServiceRegistration(new StubBundleContext(this.bundle)));
+        StubServiceReference<Object> reference = new StubServiceReference<Object>(new StubServiceRegistration<Object>(new StubBundleContext(this.bundle)));
         reference.setBundle(this.bundle);
         this.bundle.addRegisteredService(reference);
         reference.addUsingBundles(this.bundle);
@@ -491,14 +495,13 @@ public class StubBundleTests {
 
     }
 
-    @SuppressWarnings("unchecked")
-    private static class TestEnumeration implements Enumeration {
+    private static class TestEnumeration<S> implements Enumeration<S> {
 
         public boolean hasMoreElements() {
             throw new UnsupportedOperationException();
         }
 
-        public Object nextElement() {
+        public S nextElement() {
             throw new UnsupportedOperationException();
         }
     }

@@ -33,8 +33,10 @@ import org.osgi.framework.ServiceRegistration;
  * 
  * Threadsafe
  * 
+ * @param <S> type of ServiceReference
+ * 
  */
-public final class StubServiceReference implements ServiceReference {
+public final class StubServiceReference<S> implements ServiceReference<S> {
 
     private static final Long DEFAULT_SERVICE_ID = Long.valueOf(1);
 
@@ -44,7 +46,7 @@ public final class StubServiceReference implements ServiceReference {
 
     private final Integer serviceRanking;
 
-    private final StubServiceRegistration serviceRegistration;
+    private final StubServiceRegistration<S> serviceRegistration;
 
     private volatile StubBundle bundle;
 
@@ -64,7 +66,7 @@ public final class StubServiceReference implements ServiceReference {
      * 
      * @param serviceRegistration The service registration behind this {@link ServiceReference}
      */
-    public StubServiceReference(StubServiceRegistration serviceRegistration) {
+    public StubServiceReference(StubServiceRegistration<S> serviceRegistration) {
         this(DEFAULT_SERVICE_ID, DEFAULT_SERVICE_RANKING, serviceRegistration);
     }
 
@@ -75,7 +77,7 @@ public final class StubServiceReference implements ServiceReference {
      * @param serviceRanking The service ranking to use
      * @param serviceRegistration The service registration behind this {@link ServiceReference}
      */
-    public StubServiceReference(Long serviceId, Integer serviceRanking, StubServiceRegistration serviceRegistration) {
+    public StubServiceReference(Long serviceId, Integer serviceRanking, StubServiceRegistration<S> serviceRegistration) {
         assertNotNull(serviceId, "serviceId");
         assertNotNull(serviceRanking, "serviceRanking");
         assertNotNull(serviceRegistration, "serviceRegistration");
@@ -110,7 +112,7 @@ public final class StubServiceReference implements ServiceReference {
      * 
      * @return This {@link ServiceReference}'s {@link ServiceRegistration}
      */
-    public StubServiceRegistration getServiceRegistration() {
+    public StubServiceRegistration<S> getServiceRegistration() {
         return this.serviceRegistration;
     }
 
@@ -122,11 +124,11 @@ public final class StubServiceReference implements ServiceReference {
             throw new IllegalArgumentException("input cannot be null");
         }
 
-        if (!(reference instanceof StubServiceReference)) {
+        if (!(reference instanceof StubServiceReference<?>)) {
             throw new IllegalArgumentException("input must be StubServiceReference");
         }
 
-        StubServiceReference other = (StubServiceReference) reference;
+        StubServiceReference<?> other = (StubServiceReference<?>) reference;
         int idComparison = serviceId.compareTo(other.serviceId);
         int rankingComparison = serviceRanking.compareTo(other.serviceRanking);
 
@@ -155,7 +157,7 @@ public final class StubServiceReference implements ServiceReference {
      * 
      * @return <code>this</code> instance of the {@link StubServiceReference}
      */
-    public StubServiceReference setBundle(StubBundle bundle) {
+    public StubServiceReference<S> setBundle(StubBundle bundle) {
         synchronized (this.bundleMonitor) {
             this.bundle = bundle;
             return this;
@@ -202,7 +204,7 @@ public final class StubServiceReference implements ServiceReference {
      * @param bundles The bundles to add
      * @return <code>this</code> instance of the {@link StubServiceReference}
      */
-    public StubServiceReference addUsingBundles(StubBundle... bundles) {
+    public StubServiceReference<S> addUsingBundles(StubBundle... bundles) {
         synchronized (this.usingBundlesMonitor) {
             this.usingBundles.addAll(Arrays.asList(bundles));
             return this;
@@ -216,7 +218,7 @@ public final class StubServiceReference implements ServiceReference {
      * @param bundles The bundles to remove
      * @return <code>this</code> instance of the {@link StubServiceReference}
      */
-    public StubServiceReference removeUsingBundles(StubBundle... bundles) {
+    public StubServiceReference<S> removeUsingBundles(StubBundle... bundles) {
         synchronized (this.usingBundlesMonitor) {
             this.usingBundles.removeAll(Arrays.asList(bundles));
             return this;
@@ -243,7 +245,7 @@ public final class StubServiceReference implements ServiceReference {
      * @param classNames The class names that this bundle is assignable from
      * @return <code>this</code> instance of the {@link StubServiceReference}
      */
-    public StubServiceReference putAssignableTo(Bundle bundle, String... classNames) {
+    public StubServiceReference<S> putAssignableTo(Bundle bundle, String... classNames) {
         synchronized (this.assignableToMonitor) {
             this.assignableTo.put(bundle, Arrays.asList(classNames));
             return this;
@@ -275,7 +277,7 @@ public final class StubServiceReference implements ServiceReference {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        StubServiceReference other = (StubServiceReference) obj;
+        StubServiceReference<?> other = (StubServiceReference<?>) obj;
 
         if (!serviceRegistration.equals(other.serviceRegistration)) {
             return false;

@@ -175,25 +175,24 @@ public class StubBundleContextTests {
     @Test
     public void getService() {
         Object service = new Object();
-        ServiceRegistration serviceRegistration = this.bundleContext.registerService(Object.class.getName(), service, null);
+        ServiceRegistration<Object> serviceRegistration = this.bundleContext.registerService(Object.class, service, null);
         assertSame(service, this.bundleContext.getService(serviceRegistration.getReference()));
     }
 
     @Test
     public void getServiceUnregistered() {
         Object service = new Object();
-        ServiceRegistration serviceRegistration = this.bundleContext.registerService(Object.class.getName(), service, null);
-        ServiceReference reference = serviceRegistration.getReference();
+        ServiceRegistration<Object> serviceRegistration = this.bundleContext.registerService(Object.class, service, null);
+        ServiceReference<Object> reference = serviceRegistration.getReference();
         serviceRegistration.unregister();
         assertNull(this.bundleContext.getService(reference));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void registerServiceArray() {
-        Dictionary properties = new Hashtable();
+        Dictionary<String, String> properties = new Hashtable<String, String>();
         properties.put("testKey", "testValue");
-        ServiceRegistration serviceRegistration = this.bundleContext.registerService(
+        ServiceRegistration<?> serviceRegistration = this.bundleContext.registerService(
             new String[] { Object.class.getName(), Exception.class.getName() }, new Object(), properties);
         assertNotNull(serviceRegistration);
         assertNotNull(serviceRegistration.getReference());
@@ -202,7 +201,7 @@ public class StubBundleContextTests {
 
     @Test
     public void removeRegisteredService() {
-        ServiceRegistration serviceRegistration = this.bundleContext.registerService(Object.class.getName(), new Object(), null);
+        ServiceRegistration<Object> serviceRegistration = this.bundleContext.registerService(Object.class, new Object(), null);
         assertEquals(1, this.bundleContext.getServiceRegistrations().size());
         this.bundleContext.removeRegisteredService(serviceRegistration);
         assertEquals(0, this.bundleContext.getServiceRegistrations().size());
@@ -233,8 +232,8 @@ public class StubBundleContextTests {
 
     @Test
     public void ungetService() {
-        StubServiceRegistration serviceRegistration = new StubServiceRegistration(this.bundleContext);
-        StubServiceReference serviceReference = new StubServiceReference(serviceRegistration);
+        StubServiceRegistration<Object> serviceRegistration = new StubServiceRegistration<Object>(this.bundleContext);
+        StubServiceReference<Object> serviceReference = new StubServiceReference<Object>(serviceRegistration);
         assertTrue(this.bundleContext.ungetService(serviceReference));
         serviceRegistration.unregister();
         assertFalse(this.bundleContext.ungetService(serviceReference));

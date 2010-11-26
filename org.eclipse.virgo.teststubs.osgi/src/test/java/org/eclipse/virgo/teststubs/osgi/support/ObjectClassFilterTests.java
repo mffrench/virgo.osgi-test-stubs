@@ -21,10 +21,7 @@ import java.util.Hashtable;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
-import org.osgi.framework.Filter;
 import org.osgi.framework.ServiceReference;
-
-import org.eclipse.virgo.teststubs.osgi.support.ObjectClassFilter;
 
 public class ObjectClassFilterTests {
 
@@ -64,7 +61,7 @@ public class ObjectClassFilterTests {
         assertTrue(this.classFilter.match(objectServiceReference));
         assertTrue(this.classNameFilter.match(objectServiceReference));
         
-        ServiceReference exceptionServiceReference = new ServiceReference() {
+        ServiceReference<Object> exceptionServiceReference = new ServiceReference<Object>() {
 
             public int compareTo(Object reference) {
                 throw new UnsupportedOperationException();

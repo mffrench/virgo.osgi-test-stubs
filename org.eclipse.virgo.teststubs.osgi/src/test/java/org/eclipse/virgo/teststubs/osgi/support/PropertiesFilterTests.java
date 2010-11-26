@@ -33,7 +33,7 @@ public class PropertiesFilterTests {
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("testKey", "testValue");
         PropertiesFilter filter = new PropertiesFilter(properties);
-        assertFalse(filter.match(new ServiceReference() {
+        assertFalse(filter.match(new ServiceReference<Object>() {
 
             public int compareTo(Object reference) {
                 throw new UnsupportedOperationException();
@@ -61,7 +61,7 @@ public class PropertiesFilterTests {
             }
         }));
 
-        assertFalse(filter.match(new ServiceReference() {
+        assertFalse(filter.match(new ServiceReference<Object>() {
 
             public int compareTo(Object reference) {
                 throw new UnsupportedOperationException();
@@ -88,7 +88,7 @@ public class PropertiesFilterTests {
             }
         }));
 
-        assertTrue(filter.match(new ServiceReference() {
+        assertTrue(filter.match(new ServiceReference<Object>() {
 
             public int compareTo(Object reference) {
                 throw new UnsupportedOperationException();
