@@ -7,7 +7,7 @@ Export-Package: org.eclipse.virgo.teststubs.osgi.framework;version="1.
  ent.internal;version="1.0.0";uses:="org.osgi.service.event",org.eclip
  se.virgo.teststubs.osgi.support;version="1.0.0";uses:="org.osgi.frame
  work"
-Bundle-Version: 1.0.0
+Bundle-Version: 3.0.0
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: OSGi Framework Test Stub Implementations
 Bundle-ManifestVersion: 2
