@@ -437,9 +437,11 @@ public final class StubBundleContext implements BundleContext {
     public StubBundleContext removeRegisteredService(ServiceRegistration<?>... serviceRegistrations) {
         synchronized (this.servicesMonitor) {
             this.serviceRegistrations.removeAll(Arrays.asList(serviceRegistrations));
+            for (ServiceRegistration registration: serviceRegistrations) {
+                this.services.remove(registration.getReference());
+            }
             return this;
         }
-
     }
 
     /**
