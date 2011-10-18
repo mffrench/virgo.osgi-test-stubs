@@ -186,6 +186,7 @@ public class StubBundleContextTests {
         ServiceReference<Object> reference = serviceRegistration.getReference();
         serviceRegistration.unregister();
         assertNull(this.bundleContext.getService(reference));
+        assertNull(this.bundleContext.getServiceReference(Object.class.getName()));
     }
 
     @Test
