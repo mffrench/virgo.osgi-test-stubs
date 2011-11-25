@@ -703,7 +703,7 @@ public final class StubBundle implements Bundle {
      * {@inheritDoc}
      */
     public int compareTo(Bundle o) {
-        int bundleIdCompare = (new Long(o.getBundleId())).compareTo(this.bundleId);
+        int bundleIdCompare = Long.valueOf(o.getBundleId()).compareTo(this.bundleId);
         if (bundleIdCompare != 0) {
             return bundleIdCompare;
         }
