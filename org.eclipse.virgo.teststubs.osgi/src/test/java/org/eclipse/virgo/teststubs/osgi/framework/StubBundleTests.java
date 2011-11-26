@@ -24,11 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 import org.junit.Test;
 import org.osgi.framework.Bundle;
@@ -36,6 +32,7 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Version;
+import org.osgi.framework.startlevel.BundleStartLevel;
 
 public class StubBundleTests {
 
@@ -463,6 +460,40 @@ public class StubBundleTests {
         assertContains("symbolic name", toString);
         assertContains("version", toString);
         assertContains("state", toString);
+    }
+
+    @Test
+    public void compareTo() {
+        assertEquals(0, this.bundle.compareTo(this.bundle));
+        assertEquals(0, this.bundle.compareTo(new StubBundle(DEFAULT_BUNDLE_ID, DEFAULT_SYMBOLIC_NAME, DEFAULT_VERSION, DEFAULT_LOCATION)));
+        assertTrue(0 != this.bundle.compareTo(new StubBundle(2L, DEFAULT_SYMBOLIC_NAME, DEFAULT_VERSION, DEFAULT_LOCATION)));
+        assertTrue(0 != this.bundle.compareTo(new StubBundle(DEFAULT_BUNDLE_ID, "testName", DEFAULT_VERSION, DEFAULT_LOCATION)));
+        assertTrue(0 != this.bundle.compareTo(new StubBundle(DEFAULT_BUNDLE_ID, DEFAULT_SYMBOLIC_NAME, new Version(1, 0, 0), DEFAULT_LOCATION)));
+        assertTrue(0 != this.bundle.compareTo(new StubBundle(DEFAULT_BUNDLE_ID, DEFAULT_SYMBOLIC_NAME, DEFAULT_VERSION, "testLocation")));
+        assertEquals(0, this.bundle.compareTo(new StubBundle()));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void compareToNull() {
+        this.bundle.compareTo(null);
+    }
+
+    @Test
+    public void testGetSignerCertificates() {
+        assertEquals(0, this.bundle.getSignerCertificates(0).size());
+        assertEquals(0, this.bundle.getSignerCertificates(7).size());
+    }
+
+    @Test
+    public void adapt() {
+        assertNull(this.bundle.adapt(null));
+        assertNull(this.bundle.adapt(BundleStartLevel.class));
+    }
+
+    @Test
+    public void getDataFile() {
+        assertNull(this.bundle.getDataFile(null));
+        assertNull(this.bundle.getDataFile("testFile"));
     }
 
     private static final class TestInputStream extends InputStream {

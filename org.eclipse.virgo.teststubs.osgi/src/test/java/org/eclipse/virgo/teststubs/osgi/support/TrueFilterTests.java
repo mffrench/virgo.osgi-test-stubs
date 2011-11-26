@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Dictionary;
+import java.util.Map;
 
 import org.junit.Test;
 import org.osgi.framework.ServiceReference;
@@ -28,6 +29,7 @@ public class TrueFilterTests {
         assertTrue(filter.match((Dictionary<String, ?>) null));
         assertTrue(filter.match((ServiceReference<?>) null));
         assertTrue(filter.matchCase(null));
+        assertTrue(filter.matches((Map<String, ?>) null));
     }
 
     @Test

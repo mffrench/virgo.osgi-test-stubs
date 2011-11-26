@@ -95,6 +95,11 @@ public class StubBundleContextTests {
     }
 
     @Test
+    public void getBundleByLocation() {
+        assertNull(this.bundleContext.getBundle("testLocation"));
+    }
+
+    @Test
     public void getBundleById() {
         StubBundle bundle = new StubBundle(25L, "testSymbolicName", new Version(1, 0, 0), "testLocation");
         this.bundleContext.addInstalledBundle(bundle);
@@ -299,6 +304,12 @@ public class StubBundleContextTests {
         assertNotNull(this.bundleContext.getServiceReference(Object.class));
     }
 
+    @Test
+    public void getServiceReferenceNoMatching() throws InvalidSyntaxException {
+        this.bundleContext.addFilter(new FalseTestFilter());
+        this.bundleContext.registerService(Object.class, new Object(), null);
+        assertEquals(0, this.bundleContext.getServiceReferences(Object.class, "falseTestFilter").size());
+    }
 
     @Test
     public void getServiceReferenceTwoValues() throws InvalidSyntaxException {
@@ -388,6 +399,24 @@ public class StubBundleContextTests {
          */
         public boolean matches(Map<String, ?> map) {
             throw new UnsupportedOperationException();
+        }
+
+    }
+
+    private static class FalseTestFilter extends TestFilter {
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean match(ServiceReference<?> reference) {
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getFilterString() {
+            return "falseTestFilter";
         }
 
     }

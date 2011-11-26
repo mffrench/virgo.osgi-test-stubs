@@ -16,7 +16,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.junit.Test;
 import org.osgi.framework.Bundle;
@@ -60,7 +62,7 @@ public class ObjectClassFilterTests {
         
         assertTrue(this.classFilter.match(objectServiceReference));
         assertTrue(this.classNameFilter.match(objectServiceReference));
-        
+
         ServiceReference<Object> exceptionServiceReference = new ServiceReference<Object>() {
 
             public int compareTo(Object reference) {
@@ -90,6 +92,19 @@ public class ObjectClassFilterTests {
 
         assertFalse(this.classFilter.match(exceptionServiceReference));
         assertFalse(this.classNameFilter.match(exceptionServiceReference));
+    }
+
+    @Test
+    public void matches() {
+        Map<String, String[]> classNameMap = new HashMap<String, String[]>();
+        classNameMap.put(Constants.OBJECTCLASS, new String[]{Object.class.getName(), Object.class.getName()});
+
+        assertTrue(this.classFilter.matches(classNameMap));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void matchesWithEmptyMap() {
+        this.classFilter.matches(new HashMap<String, Object>());
     }
 
     @SuppressWarnings("unchecked")

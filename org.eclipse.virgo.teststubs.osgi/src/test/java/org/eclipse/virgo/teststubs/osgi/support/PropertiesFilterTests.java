@@ -116,6 +116,47 @@ public class PropertiesFilterTests {
         }));
     }
 
+    @Test
+    public void matchesSameProperties() {
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put("testKey", "testValue");
+        PropertiesFilter filter = new PropertiesFilter(properties);
+
+        assertTrue(filter.matches(properties));
+
+        properties.put("newTestKey", "newTestValue");
+        assertTrue(filter.matches(properties));
+
+        properties.remove("testKey"); //removes from filter
+        assertTrue(filter.matches(properties));
+    }
+
+    @Test
+    public void matchesNewProperties() {
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put("testKey", "testValue");
+        PropertiesFilter filter = new PropertiesFilter(properties);
+
+        Map<String, Object> newProperties = new HashMap<String, Object>();
+        newProperties.put("testKey", "testValue");
+
+        assertTrue(filter.matches(newProperties));
+
+        newProperties.put("newTestKey", "newTestValue");
+        assertTrue(filter.matches(newProperties));
+
+        newProperties.remove("testKey");
+        assertFalse(filter.matches(newProperties));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void matchesNull() {
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put("testKey", "testValue");
+        PropertiesFilter filter = new PropertiesFilter(properties);
+        filter.matches(null);
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     public void matchDictionary() {

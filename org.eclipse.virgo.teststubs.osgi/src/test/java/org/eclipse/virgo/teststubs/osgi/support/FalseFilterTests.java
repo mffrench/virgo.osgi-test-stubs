@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Dictionary;
+import java.util.Map;
 
 import org.junit.Test;
 import org.osgi.framework.ServiceReference;
@@ -25,12 +26,12 @@ public class FalseFilterTests {
 
     private final FalseFilter filter = new FalseFilter();
 
-    @SuppressWarnings("unchecked")
     @Test
     public void match() {
-        assertFalse(filter.match((Dictionary) null));
-        assertFalse(filter.match((ServiceReference) null));
+        assertFalse(filter.match((Dictionary<String, ?>) null));
+        assertFalse(filter.match((ServiceReference<?>) null));
         assertFalse(filter.matchCase(null));
+        assertFalse(filter.matches((Map<String, ?>) null));
     }
 
     @Test
